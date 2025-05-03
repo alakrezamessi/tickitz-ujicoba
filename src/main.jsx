@@ -1,17 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./styles/index.css";
 import { BrowserRouter } from "react-router";
-import { Provider } from "react-redux";
-import store from "./redux/store";
-import App from "./App.jsx";
-import "./styles/tailwind.css";
+import Router from "./router";
+import AuthProvider from "./context/authContext";
+import ReduxProvider from "./redux/ReduxProvider";
+import ScrollToTop from "./lib/ScrollToTop";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <ReduxProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Router />
+        </BrowserRouter>
+      </AuthProvider>
+    </ReduxProvider>
+  </StrictMode>
 );

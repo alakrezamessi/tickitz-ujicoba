@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@layer base {
+  .padding-general {
+    padding-inline: 6rem;
+  }
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-10px);
+    }
+    40% {
+      transform: translateX(10px);
+    }
+    60% {
+      transform: translateX(-10px);
+    }
+    80% {
+      transform: translateX(10px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  .animation-shake {
+    animation: shake 0.5s;
+  }
+}
+
+#root {
+  scroll-behavior: smooth;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.font-Jaro {
+  font-family: "Jaro", sans-serif;
+}
+
+.font-mulish {
+  font-family: "Mulish", sans-serif;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+.shadow-white {
+  box-shadow: rgba(203, 201, 201, 0.756) 0px 5px 15px;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.loader {
+  position: relative;
+  margin-block: 0.6rem;
+}
+
+.jimu-primary-loading:before,
+.jimu-primary-loading:after {
+  position: absolute;
+  top: 0;
+  content: "";
+}
+
+.jimu-primary-loading:before {
+  left: -19.992px;
+}
+
+.jimu-primary-loading:after {
+  left: 19.992px;
+  -webkit-animation-delay: 0.32s !important;
+  animation-delay: 0.32s !important;
+}
+
+.jimu-primary-loading:before,
+.jimu-primary-loading:after,
+.jimu-primary-loading {
+  background: #076fe5;
+  -webkit-animation: loading-keys-app-loading 0.8s infinite ease-in-out;
+  animation: loading-keys-app-loading 0.8s infinite ease-in-out;
+  width: 13.6px;
+  height: 32px;
+}
+
+.jimu-primary-loading {
+  text-indent: -9999em;
+  margin: auto;
+  position: absolute;
+  right: calc(50% - 6.8px);
+  top: calc(50% - 16px);
+  -webkit-animation-delay: 0.16s !important;
+  animation-delay: 0.16s !important;
+}
+
+@-webkit-keyframes loading-keys-app-loading {
+  0%,
+  80%,
+  100% {
+    opacity: 0.75;
+    box-shadow: 0 0 #076fe5;
+    height: 32px;
+  }
+
+  40% {
+    opacity: 1;
+    box-shadow: 0 -8px #076fe5;
+    height: 40px;
+  }
+}
+
+@keyframes loading-keys-app-loading {
+  0%,
+  80%,
+  100% {
+    opacity: 0.75;
+    box-shadow: 0 0 #076fe5;
+    height: 32px;
+  }
+
+  40% {
+    opacity: 1;
+    box-shadow: 0 -8px #076fe5;
+    height: 40px;
+  }
+}
