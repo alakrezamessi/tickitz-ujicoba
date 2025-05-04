@@ -21,10 +21,10 @@ const genreGradients = [
 const Card = ({ title, dataGenre, release, src, id, vote_average }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Get genres data from Redux store
+  // Get genres data from Redux store - PERBAIKAN DISINI
   const genresData = useSelector((state) => {
-    // Select only the genres data array - not the whole state
-    return state && state.genres ? state.genres.data || [] : [];
+    // The API response typically includes genres data in 'genres' property
+    return state?.genres?.data?.genres || [];
   });
 
   // Generate a consistent color based on genre ID
@@ -95,13 +95,13 @@ const Card = ({ title, dataGenre, release, src, id, vote_average }) => {
           >
             <button
               onClick={handleDetailsClick}
-              className="w-3/4 px-2 sm:px-4 py-2 sm:py-3 bg-white text-blue-700 rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-50 transition-colors shadow-lg"
+              className="w-3/4 px-2 sm:px-4 py-2 sm:py-3 bg-white text-blue-700 rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-50 transition-colors shadow-lg cursor-pointer"
             >
               Details
             </button>
             <button
               onClick={handleBuyTicketClick}
-              className="w-3/4 px-2 sm:px-4 py-2 sm:py-3 bg-blue-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors shadow-lg"
+              className="w-3/4 px-2 sm:px-4 py-2 sm:py-3 bg-blue-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors shadow-lg cursor-pointer"
             >
               Buy Ticket
             </button>
@@ -138,12 +138,14 @@ const Card = ({ title, dataGenre, release, src, id, vote_average }) => {
             </div>
           )}
 
-          {/* Recommendation text */}
-          <div className="mt-2 sm:mt-3 flex items-center">
-            <span className="text-2xs sm:text-xs font-medium text-blue-600 bg-blue-50 rounded-md px-1.5 sm:px-2 py-0.5 sm:py-1">
-              Recommendation
-            </span>
-          </div>
+          {/* Recommendation text - only shown for movies rated 8.0 or higher */}
+          {vote_average && vote_average >= 8.0 && (
+            <div className="mt-2 sm:mt-3 flex items-center">
+              <span className="text-2xs sm:text-xs font-medium text-blue-600 bg-blue-50 rounded-md px-1.5 sm:px-2 py-0.5 sm:py-1">
+                Recommendation
+              </span>
+            </div>
+          )}
         </div>
       </motion.div>
     </Link>

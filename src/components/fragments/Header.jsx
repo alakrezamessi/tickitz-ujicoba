@@ -13,7 +13,7 @@ const Header = () => {
   // console.log(userActive);
   return (
     <header className="border-b-2 border-gray-300 sticky top-0 z-20 bg-white">
-      <div className="px-4 lg:px-8 md:px-12 xl:px-24 py-4 flex justify-between">
+      <div className="px-4 lg:px-8 md:px-12 xl:px-24 py-2 flex justify-between items-center">
         <div className="flex-1 items-center flex">
           <Icon />
         </div>
@@ -24,8 +24,8 @@ const Header = () => {
               isPending
                 ? "pending"
                 : isActive
-                ? "text-blue-600 font-bold text-xl px-4 py-2"
-                : "text-blue-300 font-bold text-xl hover:bg-blue-600 px-4 py-2 rounded-md hover:text-white hover:font-bold"
+                ? "text-blue-600 font-bold text-lg px-3 py-1"
+                : "text-blue-300 font-bold text-lg hover:bg-blue-600 px-3 py-1 rounded-md hover:text-white hover:font-bold"
             }
           >
             Home
@@ -36,8 +36,8 @@ const Header = () => {
               isPending
                 ? "pending"
                 : isActive
-                ? "text-blue-600 font-bold text-xl px-4 py-2 "
-                : "text-blue-300 font-bold text-xl hover:bg-blue-600 px-4 py-2 rounded-md hover:text-white hover:font-bold"
+                ? "text-blue-600 font-bold text-lg px-3 py-1"
+                : "text-blue-300 font-bold text-lg hover:bg-blue-600 px-3 py-1 rounded-md hover:text-white hover:font-bold"
             }
           >
             Movie
@@ -48,31 +48,31 @@ const Header = () => {
               isPending
                 ? "pending"
                 : isActive
-                ? "text-blue-600 font-bold text-xl px-4 py-2 "
-                : "text-blue-300 font-bold text-xl hover:bg-blue-600 px-4 py-2 rounded-md hover:text-white hover:font-bold"
+                ? "text-blue-600 font-bold text-lg px-3 py-1"
+                : "text-blue-300 font-bold text-lg hover:bg-blue-600 px-3 py-1 rounded-md hover:text-white hover:font-bold"
             }
           >
             Buy Ticket
           </NavLink>
         </div>
-        <div className="flex-1 lg:flex hidden items-center justify-end gap-8">
+        <div className="flex-1 lg:flex hidden items-center justify-end gap-4">
           {userActive.isLogin ? (
-            <Link to={"/profile"} className="flex gap-4 items-center">
-              <div className="border-2 rounded-full border-blue-600 shadow-2xl px-4 py-4">
-                <FaUser className="text-2xl" />
+            <Link to={"/profile"} className="flex gap-3 items-center">
+              <div className="border-2 rounded-full border-blue-600 shadow-lg px-3 py-3">
+                <FaUser className="text-xl" />
               </div>
-              <p className="text-xl font-bold">Users</p>
+              <p className="text-lg font-bold">Users</p>
             </Link>
           ) : (
             <>
               <Button
                 title="Sign In"
-                classname="border-blue-600 border-2 px-4 py-2 rounded-md text-blue-600"
+                classname="border-blue-600 border-2 px-3 py-1 rounded-md text-blue-600"
                 to="auth"
               />
               <Button
                 title="Sign Up"
-                classname="bg-blue-600 border-2 px-4 py-2 rounded-md text-white border-blue-600"
+                classname="bg-blue-600 border-2 px-3 py-1 rounded-md text-white border-blue-600"
                 to="auth/new"
               />
             </>

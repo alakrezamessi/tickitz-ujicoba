@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import Card from "../elements/Card";
 import Skeleton from "../elements/Skeleton";
@@ -6,21 +6,59 @@ import { motion } from "framer-motion";
 
 const UpcomingMovie = ({ datas, isLoading }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
-  // Dynamic card width for better responsiveness
-  const getCardWidth = () => {
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 640) return 160; // Smaller on mobile
-      if (window.innerWidth < 768) return 190;
-      if (window.innerWidth < 1024) return 210;
-      return 220;
-    }
-    return 220; // Default fallback
-  };
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [cardWidth, setCardWidth] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(5);
+
+  // Calculate card width based on container width and responsive breakpoints
+  useEffect(() => {
+    const updateDimensions = () => {
+      const container = document.getElementById("scrollContainer");
+      if (container) {
+        const containerWidth = container.clientWidth;
+        let cardsToShow = 5; // Default for desktop
+
+        // Responsive breakpoints
+        if (window.innerWidth < 640) {
+          cardsToShow = 1.5; // Mobile - show 1.5 cards
+        } else if (window.innerWidth < 768) {
+          cardsToShow = 2.5; // Small tablet - show 2.5 cards
+        } else if (window.innerWidth < 1024) {
+          cardsToShow = 3.5; // Tablet - show 3.5 cards
+        } else if (window.innerWidth < 1280) {
+          cardsToShow = 4; // Small desktop - show 4 cards
+        }
+
+        setVisibleCards(Math.floor(cardsToShow));
+
+        // Calculate gap size based on screen width
+        const gapSize = window.innerWidth < 640 ? 12 : 16; // 3px or 4px gap (tailwind gap-3 and gap-4)
+        const totalGapWidth = gapSize * (cardsToShow - 1); // gaps between cards
+
+        // Calculate card width
+        const calculatedCardWidth =
+          (containerWidth - totalGapWidth) / cardsToShow;
+
+        setContainerWidth(containerWidth);
+        setCardWidth(calculatedCardWidth);
+      }
+    };
+
+    // Initial calculation
+    updateDimensions();
+
+    // Recalculate on window resize
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   const scrollLeft = () => {
     const container = document.getElementById("scrollContainer");
-    const cardWidth = getCardWidth();
-    const newPosition = Math.max(scrollPosition - cardWidth * 2, 0);
+    const gapSize = window.innerWidth < 640 ? 12 : 16;
+    // Scroll by the number of visible cards
+    const scrollAmount =
+      cardWidth * visibleCards + gapSize * (visibleCards - 1);
+    const newPosition = Math.max(scrollPosition - scrollAmount, 0);
     setScrollPosition(newPosition);
     container.scrollTo({
       left: newPosition,
@@ -30,9 +68,12 @@ const UpcomingMovie = ({ datas, isLoading }) => {
 
   const scrollRight = () => {
     const container = document.getElementById("scrollContainer");
-    const cardWidth = getCardWidth();
+    const gapSize = window.innerWidth < 640 ? 12 : 16;
+    // Scroll by the number of visible cards
+    const scrollAmount =
+      cardWidth * visibleCards + gapSize * (visibleCards - 1);
     const maxScroll = container.scrollWidth - container.clientWidth;
-    const newPosition = Math.min(scrollPosition + cardWidth * 2, maxScroll);
+    const newPosition = Math.min(scrollPosition + scrollAmount, maxScroll);
     setScrollPosition(newPosition);
     container.scrollTo({
       left: newPosition,
@@ -40,8 +81,26 @@ const UpcomingMovie = ({ datas, isLoading }) => {
     });
   };
 
+  // Generate skeleton placeholders based on visible cards
+  const renderSkeletons = () => {
+    // Always show at least 5 skeletons for loading state
+    const skeletonCount = Math.max(5, visibleCards + 1);
+    return [...Array(skeletonCount)].map((_, idx) => (
+      <motion.div
+        key={idx}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: idx * 0.1 }}
+        className="flex-shrink-0 snap-start"
+        style={{ width: cardWidth > 0 ? `${cardWidth}px` : "auto" }}
+      >
+        <Skeleton />
+      </motion.div>
+    ));
+  };
+
   return (
-    <section className="px-4 lg:px-8 md:px-12 xl:px-24 py-12 sm:py-20 bg-white relative">
+    <section className="px-4 lg:px-8 md:px-12 xl:px-24 py-12 sm:py-20 md:py-5 bg-white relative">
       {/* Background decorations - adjusted size */}
       <div className="absolute top-1/2 right-0 w-32 sm:w-48 h-32 sm:h-48 bg-blue-100 rounded-full blur-3xl opacity-30"></div>
       <div className="absolute bottom-0 left-1/4 w-32 sm:w-48 h-32 sm:h-48 bg-blue-100 rounded-full blur-3xl opacity-30"></div>
@@ -54,7 +113,7 @@ const UpcomingMovie = ({ datas, isLoading }) => {
         className="max-w-6xl mx-auto"
       >
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 sm:mb-8">
-          <div className="text-center md:text-left mb-4 md:mb-0">
+          <div className="text-center md:text-left mb-4 md:mb-0 md:mt-12">
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -89,7 +148,7 @@ const UpcomingMovie = ({ datas, isLoading }) => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="flex gap-2 sm:gap-3"
+            className="flex gap-2 sm:gap-3 md:mt-34"
           >
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -116,19 +175,7 @@ const UpcomingMovie = ({ datas, isLoading }) => {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {isLoading ? (
-            <>
-              {[...Array(6)].map((_, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: idx * 0.1 }}
-                  className="flex-shrink-0 snap-start w-36 sm:w-44 md:w-48 lg:w-52"
-                >
-                  <Skeleton />
-                </motion.div>
-              ))}
-            </>
+            <>{renderSkeletons()}</>
           ) : datas && datas.length !== 0 ? (
             datas.map((data, idx) => (
               <motion.div
@@ -137,7 +184,8 @@ const UpcomingMovie = ({ datas, isLoading }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: Math.min(idx * 0.1, 0.8) }}
                 viewport={{ once: true }}
-                className="flex-shrink-0 snap-start w-36 sm:w-44 md:w-48 lg:w-52"
+                className="flex-shrink-0 snap-start"
+                style={{ width: cardWidth > 0 ? `${cardWidth}px` : "auto" }}
                 whileHover={{ y: -5 }}
               >
                 <Card

@@ -96,13 +96,14 @@ const HeroSection = () => {
             <div className="animate-pulse w-full h-full bg-gray-200 rounded-3xl"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 grid-rows-3 gap-2 md:gap-3 w-full h-full">
+          <div className="grid grid-cols-2 grid-rows-2 md:grid-rows-3 gap-2 md:gap-3 w-full h-full">
             {movies.length > 0 && (
               <>
+                {/* Movie 1 - Top Left */}
                 <motion.div
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="bg-cover bg-center rounded-t-lg md:rounded-t-xl shadow-md overflow-hidden relative group"
+                  className="bg-cover bg-center rounded-t-lg md:rounded-t-xl shadow-md overflow-hidden relative group md:row-span-1"
                   style={{
                     backgroundImage: `url(${getImageUrl(
                       movies[0].poster_path
@@ -117,10 +118,11 @@ const HeroSection = () => {
                   </div>
                 </motion.div>
 
+                {/* Movie 2 - Top Right (span 2 rows on md+) */}
                 <motion.div
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="bg-center bg-cover row-span-2 rounded-t-lg md:rounded-t-xl shadow-md overflow-hidden relative group"
+                  className="bg-center bg-cover rounded-t-lg md:rounded-t-xl shadow-md overflow-hidden relative group md:row-span-2"
                   style={{
                     backgroundImage: `url(${getImageUrl(
                       movies[1].poster_path
@@ -134,10 +136,11 @@ const HeroSection = () => {
                   </div>
                 </motion.div>
 
+                {/* Movie 3 - Bottom Left (span 2 rows on md+) */}
                 <motion.div
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="bg-center bg-cover row-start-2 row-end-4 rounded-b-lg md:rounded-b-xl shadow-md overflow-hidden relative group"
+                  className="bg-center bg-cover rounded-b-lg md:rounded-b-xl shadow-md overflow-hidden relative group md:row-span-2 md:row-start-2"
                   style={{
                     backgroundImage: `url(${getImageUrl(
                       movies[2].poster_path
@@ -151,10 +154,11 @@ const HeroSection = () => {
                   </div>
                 </motion.div>
 
+                {/* Movie 4 - Bottom Right */}
                 <motion.div
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="bg-cover bg-center col-end-3 rounded-b-lg md:rounded-b-xl shadow-md overflow-hidden relative group"
+                  className="bg-cover bg-center rounded-b-lg md:rounded-b-xl shadow-md overflow-hidden relative group md:row-span-1 md:row-start-3"
                   style={{
                     backgroundImage: `url(${getImageUrl(
                       movies[3].poster_path
